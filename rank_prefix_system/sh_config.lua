@@ -6,7 +6,7 @@ prefixFactions = {} -- add individual factions to any category made before
 prefixFactions[FACTION_NAME] = "category" -- pattern
 prefixFactions[FACTION_ARMY] = "army" -- example
 
-ranksPrefix = {} -- this is table with every ranks' list
+ranksPrefix = {} -- this is table with every ranks list
 ranksPrefix["name"] = { -- pattern
     "Prefix1",
     "Prefix2",
