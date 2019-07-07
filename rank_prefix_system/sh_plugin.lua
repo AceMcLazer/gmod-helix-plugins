@@ -5,6 +5,7 @@ PLUGIN.author = "Xemon"
 PLUGIN.description = "Ranks' system with prefixes."
 
 ix.util.Include("sh_config.lua")
+ix.util.Include("sh_message.lua")
 
 function PLUGIN:InitializedPlugins()
     for k, v in pairs(categories) do
@@ -16,9 +17,9 @@ function PLUGIN:InitializedPlugins()
 end
 
 function PLUGIN:OnCharacterCreated(client, char)
-    manageCharacter(true, char)
-
-    setName(char, "", ranksPrefix[prefixFactions[char:GetFaction()]][1])
+    if manageCharacter(true, char) then
+        setName(char, "", ranksPrefix[prefixFactions[char:GetFaction()]][1])
+    end
 end
 
 function PLUGIN:PreCharacterDeleted(client, char)
@@ -40,6 +41,8 @@ function manageCharacter(create, char)
     end
 
     local query = sql.Query(query)
+
+    return true
 end
 
 ix.command.Add("Promote", {
@@ -51,7 +54,7 @@ ix.command.Add("Promote", {
     },
     OnRun = function(self, client, target)
         if updateRank(true, client, target) == false then
-            client:PrintMessage(HUD_PRINTTALK, "You can't promote the target!")
+            client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You can't promote ", target:GetPlayer():Name(), "!"})
         end
     end
 })
@@ -65,7 +68,7 @@ ix.command.Add("Demote", {
     },
     OnRun = function(self, client, target)
         if updateRank(false, client, target) == false then
-            client:PrintMessage(HUD_PRINTTALK, "You can't degrade the target!")
+            client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You can't demote ", target:GetPlayer():Name(), "!"})
         end
     end
 })
@@ -106,9 +109,9 @@ function updateRank(promote, client, target)
     local newPrefix = ranksPrefix[category][newRank]
 
     if promote == true then
-        client:PrintMessage(HUD_PRINTTALK, "You succesfully promote " .. targetName .. "! " .. targetName .. "'s new rank is " .. newPrefix .. ".")
+        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully promote ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
     else
-        client:PrintMessage(HUD_PRINTTALK, "You succesfully degrade " .. targetName .. "! " .. targetName .. "'s new rank is " .. newPrefix .. ".")
+        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully demote ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
     end
 
     setName(target, oldPrefix, newPrefix)
@@ -136,7 +139,7 @@ function canUpdateRank(clientCharID, clientFaction, targetID, targetFaction, pro
         local targetRank = sql.QueryValue(targetRank)
         local targetRank = tonumber(targetRank)
 
-        if clientRank < targetRank then -- change operator to <=
+        if clientRank <= targetRank then
             cantPromote = true
         end
 

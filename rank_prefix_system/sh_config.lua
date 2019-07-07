@@ -5,9 +5,10 @@ categories[1] = "army" -- example
 prefixFactions = {} -- add individual factions to any category made before
 prefixFactions[FACTION_NAME] = "category" -- pattern
 prefixFactions[FACTION_ARMY] = "army" -- example
+-- You have to delete the above examples, because they trigger errors (if factions like: FACTION_ARMY or FACTION_NAME doesn't exist)
 
 ranksPrefix = {} -- this is table with every ranks list
-ranksPrefix["name"] = { -- pattern
+ranksPrefix["categoryName"] = { -- pattern
     "Prefix1",
     "Prefix2",
     "Prefix3",
