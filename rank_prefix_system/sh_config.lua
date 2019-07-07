@@ -1,4 +1,4 @@
-categories = {} -- add to this table every ranks' category what's you want on your server!
+categories = {} -- add to this table every ranks' category which you want on your server!
 categories[1] = "army" -- example
 -- every next category must have higher index (2, 3, 4, 5...)
 
