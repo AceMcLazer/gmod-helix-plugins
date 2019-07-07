@@ -120,22 +120,19 @@ end
 function canUpdateRank(clientCharID, clientFaction, targetID, targetFaction, promote)
     cantPromote = false
 
-    if (prefixFactions[clientFaction] == nil) or (prefixFactions[targetFaction] == nil) then
+    local clientCategory = prefixFactions[clientFaction]
+    local targetCategory = prefixFactions[targetFaction] 
+
+    if (clientCategory == nil) or (targetCategory == nil) then
         cantPromote = true
-    end
-
-    if clientFaction != targetFaction then
+    elseif clientCategory != targetCategory then
         cantPromote = true
-    end
-
-    local category = prefixFactions[targetFaction] 
-
-    if category != nil then
-        local clientRank = "SELECT rank FROM rank_prefix_system_" .. category .. " WHERE char=" .. clientCharID
+    elseif clientCategory == targetCategory then
+        local clientRank = "SELECT rank FROM rank_prefix_system_" .. clientCategory .. " WHERE char=" .. clientCharID
         local clientRank = sql.QueryValue(clientRank)
         local clientRank = tonumber(clientRank)
 
-        local targetRank = "SELECT rank FROM rank_prefix_system_" .. category .. " WHERE char=" .. targetID
+        local targetRank = "SELECT rank FROM rank_prefix_system_" .. targetCategory .. " WHERE char=" .. targetID
         local targetRank = sql.QueryValue(targetRank)
         local targetRank = tonumber(targetRank)
 
@@ -144,7 +141,7 @@ function canUpdateRank(clientCharID, clientFaction, targetID, targetFaction, pro
         end
 
         if promote then
-            if targetRank == #ranksPrefix[category] then
+            if targetRank == #ranksPrefix[targetCategory] then
                 cantPromote = true
             end
         else
