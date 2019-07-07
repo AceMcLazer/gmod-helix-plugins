@@ -56,8 +56,8 @@ ix.command.Add("Promote", {
     end
 })
 
-ix.command.Add("Degrade", {
-    description = "Degrades the given player by rank down.",
+ix.command.Add("Demote", {
+    description = "Demotes the given player by rank down.",
     privilege = "Rank Prefix System",
     adminOnly = false,
     arguments = {
