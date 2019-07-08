@@ -2,7 +2,7 @@ local PLUGIN = PLUGIN
 
 PLUGIN.name = "Rank Prefix System"
 PLUGIN.author = "Xemon"
-PLUGIN.description = "Ranks' system with prefixes."
+PLUGIN.description = "Rank system that add prefixes before the player's name."
 
 ix.util.Include("sh_config.lua")
 ix.util.Include("sh_message.lua")
@@ -47,8 +47,7 @@ end
 
 ix.command.Add("Promote", {
     description = "Promotes the given player by rank up.",
-    privilege = "Rank Prefix System",
-    adminOnly = false,
+    privilege = "Rank System",
     arguments = {
         ix.type.character
     },
@@ -61,8 +60,7 @@ ix.command.Add("Promote", {
 
 ix.command.Add("Demote", {
     description = "Demotes the given player by rank down.",
-    privilege = "Rank Prefix System",
-    adminOnly = false,
+    privilege = "Rank System",
     arguments = {
         ix.type.character
     },
