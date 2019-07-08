@@ -54,7 +54,7 @@ ix.command.Add("Promote", {
     },
     OnRun = function(self, client, target)
         if updateRank(true, client, target) == false then
-            client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You can't promote ", target:GetPlayer():Name(), "!"})
+            client:SLChatMessage({Color(165, 173, 173), "[Rank System] ", Color(255, 255, 255), "You can't promote ", target:GetPlayer():Name(), "!"})
         end
     end
 })
@@ -68,7 +68,7 @@ ix.command.Add("Demote", {
     },
     OnRun = function(self, client, target)
         if updateRank(false, client, target) == false then
-            client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You can't demote ", target:GetPlayer():Name(), "!"})
+            client:SLChatMessage({Color(165, 173, 173), "[Rank System] ", Color(255, 255, 255), "You can't demote ", target:GetPlayer():Name(), "!"})
         end
     end
 })
@@ -82,7 +82,7 @@ function updateRank(promote, client, target)
     local clientFaction = clientChar:GetFaction()
     local targetFaction = target:GetFaction()
 
-    if !canUpdateRank(clientCharID, clientFaction, targetID, targetFaction, promote) then return false end
+    if !canUpdateRank(clientChar, clientCharID, clientFaction, target, targetID, targetFaction, promote) then return false end
 
     local category = prefixFactions[targetFaction]
 
@@ -109,15 +109,15 @@ function updateRank(promote, client, target)
     local newPrefix = ranksPrefix[category][newRank]
 
     if promote == true then
-        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully promoted ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
+        client:SLChatMessage({Color(165, 173, 173), "[Rank System] ", Color(255, 255, 255), "You succesfully promoted ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
     else
-        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully demoted ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
+        client:SLChatMessage({Color(165, 173, 173), "[Rank System] ", Color(255, 255, 255), "You succesfully demoted ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
     end
 
     setName(target, oldPrefix, newPrefix)
 end
 
-function canUpdateRank(clientCharID, clientFaction, targetID, targetFaction, promote)
+function canUpdateRank(clientChar, clientCharID, clientFaction, target, targetID, targetFaction, promote)
     cantPromote = false
 
     local clientCategory = prefixFactions[clientFaction]
@@ -135,6 +135,24 @@ function canUpdateRank(clientCharID, clientFaction, targetID, targetFaction, pro
         local targetRank = "SELECT rank FROM rank_prefix_system_" .. targetCategory .. " WHERE char=" .. targetID
         local targetRank = sql.QueryValue(targetRank)
         local targetRank = tonumber(targetRank)
+
+        if clientChar == target then
+            if manageCharacter(true, target) then
+                setName(target, "", ranksPrefix[targetCategory][1])
+                clientRank = 1
+                targetRank = 1
+            end
+        elseif targetRank == nil then
+            if manageCharacter(true, target) then
+                setName(target, "", ranksPrefix[targetCategory][1])
+                targetRank = 1
+            end
+        elseif clientRank == nil then
+            if manageCharacter(true, clientChar) then
+                setName(clientChar, "", ranksPrefix[clientCategory][1])
+                clientRank = 1
+            end
+        end
 
         if clientRank <= targetRank then
             cantPromote = true
