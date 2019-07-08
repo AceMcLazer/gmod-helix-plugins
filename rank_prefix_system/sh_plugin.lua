@@ -80,7 +80,7 @@ function updateRank(promote, client, target)
     local clientFaction = clientChar:GetFaction()
     local targetFaction = target:GetFaction()
 
-    if !canUpdateRank(clientChar, clientCharID, clientFaction, target, targetID, targetFaction, promote) then return false end
+    if !canUpdateRank(client, clientChar, clientCharID, clientFaction, target, targetID, targetFaction, promote) then return false end
 
     local category = prefixFactions[targetFaction]
 
@@ -115,11 +115,15 @@ function updateRank(promote, client, target)
     setName(target, oldPrefix, newPrefix)
 end
 
-function canUpdateRank(clientChar, clientCharID, clientFaction, target, targetID, targetFaction, promote)
+function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, targetID, targetFaction, promote)
     cantPromote = false
 
     local clientCategory = prefixFactions[clientFaction]
     local targetCategory = prefixFactions[targetFaction] 
+
+    if (targetCategory != nil) and (client:IsAdmin()) then
+        return true
+    end
 
     if (clientCategory == nil) or (targetCategory == nil) then
         cantPromote = true
