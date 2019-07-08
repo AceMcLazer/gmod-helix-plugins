@@ -121,10 +121,6 @@ function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, 
     local clientCategory = prefixFactions[clientFaction]
     local targetCategory = prefixFactions[targetFaction] 
 
-    if (targetCategory != nil) and (client:IsAdmin()) then
-        return true
-    end
-
     if (clientCategory == nil) or (targetCategory == nil) then
         cantPromote = true
     elseif clientCategory != targetCategory then
@@ -138,7 +134,7 @@ function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, 
         local targetRank = sql.QueryValue(targetRank)
         local targetRank = tonumber(targetRank)
 
-        if clientChar == target then
+        if (clientChar == target) and (clientRank == nil) then
             if manageCharacter(true, target) then
                 setName(target, "", ranksPrefix[targetCategory][1])
                 clientRank = 1
@@ -169,6 +165,10 @@ function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, 
                 cantPromote = true
             end
         end
+    end
+
+    if (targetCategory != nil) and (client:IsAdmin()) then
+        return true
     end
 
     return !cantPromote
