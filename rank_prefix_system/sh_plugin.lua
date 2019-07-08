@@ -109,9 +109,9 @@ function updateRank(promote, client, target)
     local newPrefix = ranksPrefix[category][newRank]
 
     if promote == true then
-        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully promote ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
+        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully promoted ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
     else
-        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully demote ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
+        client:SLChatMessage({Color(165, 173, 173), "[Rank Prefix System] ", Color(255, 255, 255), "You succesfully demoted ", targetName, "! ", targetName, "'s new rank is ", newPrefix, "."})
     end
 
     setName(target, oldPrefix, newPrefix)
