@@ -2,7 +2,7 @@ local PLUGIN = PLUGIN
 
 PLUGIN.name = "Rank Prefix System"
 PLUGIN.author = "Xemon"
-PLUGIN.description = "Rank system that add prefixes before the player's name."
+PLUGIN.description = "Rank system that adds prefixes before the player's name."
 
 ix.util.Include("sh_config.lua")
 ix.util.Include("sh_message.lua")
