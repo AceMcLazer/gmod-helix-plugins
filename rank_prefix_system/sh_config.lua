@@ -21,3 +21,7 @@ ranksPrefix["army"] = { -- example
     "General",
     "Admiral"
 }
+
+minRank = {} -- here you can set min rank for promoting/demoting
+minRank["categoryName"] = "rankNum" -- pattern
+minRank["army"] = 2 -- example

@@ -152,7 +152,11 @@ function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, 
             end
         end
 
-        if clientRank <= targetRank then
+        if minRank[clientCategory] > clientRank then
+            cantPromote = true
+        end
+
+        if clientRank <= targetRank then 
             cantPromote = true
         end
 
