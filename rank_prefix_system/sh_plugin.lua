@@ -130,9 +130,9 @@ function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, 
         local clientRank = sql.QueryValue(clientRank)
         local clientRank = tonumber(clientRank)
 
-        local targetRank = "SELECT rank FROM rank_prefix_system_" .. targetCategory .. " WHERE char=" .. targetID
-        local targetRank = sql.QueryValue(targetRank)
-        local targetRank = tonumber(targetRank)
+        targetRank = "SELECT rank FROM rank_prefix_system_" .. targetCategory .. " WHERE char=" .. targetID
+        targetRank = sql.QueryValue(targetRank)
+        targetRank = tonumber(targetRank)
 
         if (clientChar == target) and (clientRank == nil) then
             if manageCharacter(true, target) then
@@ -151,7 +151,7 @@ function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, 
                 clientRank = 1
             end
         end
-
+        
         if minRank[clientCategory] > clientRank then
             cantPromote = true
         end
@@ -170,13 +170,33 @@ function canUpdateRank(client, clientChar, clientCharID, clientFaction, target, 
             end
         end
     end
-
+    
     if (targetCategory != nil) and (client:IsAdmin()) then
-        return true
+        if (promote) and (targetRank != #ranksPrefix[targetCategory]) then
+            return true
+        elseif (!promote) and (targetRank != 1) then
+            return true
+        end
     end
 
     return !cantPromote
 end
+
+-- function PLUGIN:OnCharacterVariableChanged(char, varName, oldVar, newVar)
+--     print(varName)
+--     -- if varName != "name" then return end
+
+--     -- local faction = char:GetFaction()
+    
+--     -- if prefixFactions[faction] == nil then return end
+
+--     -- local rank = "SELECT rank FROM rank_prefix_system_" .. prefixFactions[faction] .. " WHERE char=" .. char:GetID()
+--     -- local rank = sql.QueryValue(rank)
+--     -- local rank = tonumber(rank)
+
+--     -- local prefix = ranksPrefix[prefixFactions[faction]][rank]
+--     -- setName(plyChar, prefix, prefix)
+-- end
 
 function setName(plyChar, oldPrefix, newPrefix)
     local name = plyChar:GetName()
